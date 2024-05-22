@@ -1,14 +1,14 @@
 class Solution {
     public String solution(int n) {
-        String answer = "";
+        StringBuilder answer = new StringBuilder();
         for (int i = 0; i < n / 2; i++){
-            answer += "수박";
+            answer.append("수박");
         }
         
         if (n % 2 == 1){
-            answer += "수";
+            answer.append("수");
         }
         
-        return answer;
+        return answer.toString();
     }
 }
