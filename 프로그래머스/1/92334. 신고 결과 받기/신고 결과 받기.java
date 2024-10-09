@@ -13,7 +13,7 @@ class Solution {
         }
         
         // System.out.println(reportMap.toString());
-        
+        // 새로운 해쉬맵에 각 유저의 신고당한 횟수 입력
         for(HashSet<String> set: reportMap.values()){
             ArrayList<String> list = new ArrayList<String>(set);
             for(String reportedUser: list){
@@ -23,6 +23,7 @@ class Solution {
         
         // System.out.println(reported.toString());
         
+        // 정답 도출
         int[] answer = new int[id_list.length];
         for(int i = 0; i < id_list.length; i++){
             HashSet<String> set = reportMap.getOrDefault(id_list[i], new HashSet<>());
