@@ -1,45 +1,43 @@
 import java.util.*;
 
 class Main{
+    static boolean[][] grid;
+    static boolean[] visited;
+    static int n, m;
+    
+    public static void dfs(int index){
+        visited[index] = true;
+        
+        for(int i = 1; i <= n; i++){
+            if(grid[index][i] && !visited[i]){
+                dfs(i);
+            }
+        }
+    }
+    
     public static void main(String[] args){
         Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt();
-        int m = sc.nextInt();
+        n = sc.nextInt();
+        m = sc.nextInt();
         
-        HashMap<Integer, ArrayList<Integer>> map = new HashMap<>();
-        for(int i = 1; i <= n; i++){
-            map.put(i, new ArrayList<>());
-        }
+        grid = new boolean[n+1][n+1];
+        visited = new boolean[n+1];
         
         for(int i = 0; i < m; i++){
-            int a = sc.nextInt();
-            int b = sc.nextInt();
+            int x = sc.nextInt();
+            int y = sc.nextInt();
             
-            map.get(a).add(b);
-            map.get(b).add(a);
+            grid[x][y] = true;
+            grid[y][x] = true;
         }
         
-        Stack<Integer> stack = new Stack<>();
-        boolean[] visited = new boolean[n+1];
         int answer = 0;
+        
         for(int i = 1; i <= n; i++){
-            if(visited[i]){
-                continue;
+            if(!visited[i]){
+                dfs(i);
+                answer++;
             }
-            stack.push(i);
-            visited[i] = true;
-            
-            while(!stack.isEmpty()){
-                int current = stack.pop();
-                ArrayList<Integer> list = map.get(current);
-                for(int num: list){
-                    if(!visited[num]){
-                        visited[num] = true;
-                        stack.push(num);
-                    }
-                }
-            }
-            answer++;
         }
         
         System.out.println(answer);
