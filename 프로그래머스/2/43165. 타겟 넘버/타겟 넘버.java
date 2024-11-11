@@ -1,33 +1,19 @@
+import java.util.*;
+
 class Solution {
     public int solution(int[] numbers, int target) {
-        
-        return dfs(numbers, target, 0, 0);
-    }
-    public int dfs(int[] numbers, int target, int index, int sum){
-        if(index == numbers.length){
-            // System.out.println("index = " + index + ", " + "sum = " + sum);
 
+        int answer = dfs(0, 0, numbers, target);
+        
+        return answer;
+    }
+    
+    public int dfs(int depth, int sum, int[] numbers, int target){
+        if(depth == numbers.length){
+            
             return sum == target ? 1 : 0;
         }
         
-        return dfs(numbers, target, index+1, sum + numbers[index]) + dfs(numbers, target, index+1, sum - numbers[index]);
+        return dfs(depth+1, sum+numbers[depth], numbers, target) + dfs(depth+1, sum-numbers[depth], numbers, target);
     }
 }
-
-// 4  1  2  1
-// 4  1  2 -1
-// 4  1 -2 -1
-// 4  1 -2  1
-// 4 -1  2  1
-// 4 -1  2 -1
-// 4 -1 -2 -1
-// 4 -1 -2  1
-
-//-4  1  2  1
-//-4  1  2 -1
-//-4  1 -2  1
-//-4  1 -2 -1
-//-4 -1  2  1
-//-4 -1  2 -1
-//-4 -1 -2  1
-//-4 -1 -2 -1
