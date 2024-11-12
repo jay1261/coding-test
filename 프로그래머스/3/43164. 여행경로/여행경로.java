@@ -1,56 +1,37 @@
 import java.util.*;
 
 class Solution {
-    // static ArrayList<ArrayList<String>> result = new ArrayList<>();
-    static boolean flag = false;
-    static String[] answer;
-
-    public String[] solution(String[][] tickets) {
-        answer = new String[tickets.length];
-        HashMap<String, ArrayList<Node>> map = new HashMap<>();
-        
-        Arrays.sort(tickets, (o1, o2) -> o1[1].compareTo(o2[1]));
-        
-        for(int i = 0; i < tickets.length; i++){
-            map.put(tickets[i][0], new ArrayList<>());
-        }
-        for(int i = 0; i < tickets.length; i++){
-            map.get(tickets[i][0]).add(new Node(tickets[i][1], i));
-        }
     
-        for(String[] a: tickets){
-            System.out.print(Arrays.toString(a) + " ");
-        }
-        System.out.println("");
-        
-        ArrayList<String> list = new ArrayList<>();
+    public String[] solution(String[][] tickets) {
+        String[] result = new String[tickets.length + 1];
         boolean[] visited = new boolean[tickets.length];
-        list.add("ICN");
-        dfs(map, list, "ICN", visited, tickets.length);
         
+        dfs(tickets, visited, result, "ICN", 0);
         
-        return answer;
-        
+        return result;
     }
     
-    public void dfs(HashMap<String, ArrayList<Node>> map, ArrayList<String> list, String current, boolean[] visited, int length){
-        if(flag) return;
-        if(list.size() == length + 1){
-            flag = true;
-            answer = list.stream().toArray(String[]::new);
+    public void dfs(String[][] tickets, boolean[] visited, String[] result, String current, int depth){
+        if(depth > tickets.length){
+            return;
         }
         
-        ArrayList<Node> nodes = map.getOrDefault(current, new ArrayList<>());
-        for(Node node: nodes){
-            if(!visited[node.index]){
-                visited[node.index] = true;
-                list.add(node.airport);
-                // System.out.println(list);
-                
-                dfs(map, list, node.airport, visited, length);
-                visited[node.index] = false;
-                list.remove(list.size() - 1);
+        result[depth] = current;
+        
+        ArrayList<Node> list = new ArrayList<>();
+        
+        for(int i = 0; i < tickets.length; i++){
+            if(tickets[i][0].equals(current) && !visited[i]){
+                list.add(new Node(tickets[i][1], i));
             }
+        }
+        
+        list.sort((o1, o2) -> o2.airport.compareTo(o1.airport));
+        
+        for(Node node: list){
+            visited[node.index] = true;
+            dfs(tickets, visited, result, node.airport, depth+1);
+            visited[node.index] = false;
         }
     }
     
@@ -62,11 +43,5 @@ class Solution {
             this.airport = airport;
             this.index = index;
         }
-        
-        @Override
-        public String toString(){
-            return "[" + airport + ", " + index + "]";
-        }
-    }    
+    }
 }
-    
