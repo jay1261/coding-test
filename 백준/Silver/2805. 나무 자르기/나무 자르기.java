@@ -9,13 +9,15 @@ public class Main {
         int m = sc.nextInt();
         int[] trees = new int[n];
 
+        int max = 0;
         for(int i = 0; i < n; i++){
             trees[i] = sc.nextInt();
+            max = Math.max(max, trees[i]);
         }
-        Arrays.sort(trees);
+
 
         long start = 0;
-        long end = trees[n-1];
+        long end = max;
         long answer = 0;
         while(start < end){
             long mid = (start + end) / 2;
@@ -35,10 +37,9 @@ public class Main {
     public static long cutTrees(int[] trees, long h){
         long result = 0;
         for(int i = trees.length - 1; i >= 0; i--){
-            if(trees[i] <= h) {
-                break;
+            if(trees[i] > h){
+                result += (trees[i] - h);
             }
-            result += (trees[i] - h);
         }
 
         return result;
