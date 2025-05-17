@@ -2,41 +2,46 @@ import java.util.*;
 
 class Solution {
     public int solution(int[][] maps) {
-        Queue<int[]> queue = new LinkedList<>();
-        // 상하좌우
-        int[] dx = {0, 1, 0, -1};
-        int[] dy = {1, 0, -1, 0};
-        
+        int answer = -1;
         int n = maps.length;
         int m = maps[0].length;
         
+        Queue<int[]> queue = new LinkedList<>();
         boolean[][] visited = new boolean[n][m];
-        int[][] distance = new int[n][m];
+        int[][] distances = new int[n][m];
+        int[] start = {0,0};
+        int[] dx = {1, 0, -1, 0};
+        int[] dy = {0, 1, 0, -1};
         
-        queue.add(new int[]{0,0});
+        queue.offer(start);
         visited[0][0] = true;
-        distance[0][0] = 1;
+        distances[0][0] = 1;
         
         while(!queue.isEmpty()){
             int[] current = queue.poll();
-            int x = current[0];
-            int y = current[1];
+            int cx = current[0];
+            int cy = current[1];
             
-            if(x == n-1 && y == m-1){
-                return distance[x][y];
+            if(cx == n-1 && cy == m-1){
+                answer = distances[cx][cy];
+                
             }
             
             for(int i = 0; i < 4; i++){
-                int nextX = dx[i] + x;
-                int nextY = dy[i] + y;
-                if(nextX >= 0 && nextY >= 0 && nextX < n && nextY < m && !visited[nextX][nextY] && maps[nextX][nextY] == 1) {
-                    queue.add(new int[]{nextX, nextY});
-                    visited[nextX][nextY] = true;
-                    distance[nextX][nextY] = distance[x][y] + 1;
+                int nx = cx + dx[i];
+                int ny = cy + dy[i];
+                
+                if(nx < n && nx >= 0 && ny < m && ny >= 0 && maps[nx][ny] == 1&& !visited[nx][ny]) {
+                    distances[nx][ny] = distances[cx][cy] + 1;
+                    visited[nx][ny] = true;
+                    int[] next = {nx, ny};
+                    queue.offer(next);
                 }
             }
         }
         
-        return -1;
+        
+        
+        return answer;
     }
 }
