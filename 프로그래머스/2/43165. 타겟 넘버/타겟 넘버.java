@@ -1,19 +1,29 @@
-import java.util.*;
-
 class Solution {
+    static int answer = 0;
+    
     public int solution(int[] numbers, int target) {
-
-        int answer = dfs(0, 0, numbers, target);
+        int n = numbers.length;
+        // boolean[] visited = new boolean[n];
+        
+        dfs(numbers, numbers[0], 0, 0, target, n);
+        dfs(numbers, -1*numbers[0], 0, 0, target, n);
         
         return answer;
     }
     
-    public int dfs(int depth, int sum, int[] numbers, int target){
-        if(depth == numbers.length){
-            
-            return sum == target ? 1 : 0;
+    public void dfs(int[] numbers,int num, int depth, int sum, int target,int end){
+        sum += num;
+        
+        if(depth == end-1) {
+             if(sum == target){
+                answer++;
+             }
+            return;
         }
         
-        return dfs(depth+1, sum+numbers[depth], numbers, target) + dfs(depth+1, sum-numbers[depth], numbers, target);
+        dfs(numbers, numbers[depth+1] ,depth+1, sum, target, end);
+        dfs(numbers, -1 * numbers[depth+1] ,depth+1, sum, target, end);
     }
 }
+
+                          
