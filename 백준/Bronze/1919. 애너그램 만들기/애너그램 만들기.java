@@ -2,34 +2,44 @@ import java.util.*;
 
 class Main{
     public static void main(String[] args){
-
         Scanner sc = new Scanner(System.in);
+        String input1 = sc.nextLine();
+        String input2 = sc.nextLine();
+        
+        // 맵에다가 첫번째 배열을 다 넣기.
         HashMap<Character, Integer> map1 = new HashMap<>();
         HashMap<Character, Integer> map2 = new HashMap<>();
 
-        String word1 = sc.nextLine();
-        String word2 = sc.nextLine();
-
-        for(char c: word1.toCharArray()){
+        for(char c : input1.toCharArray()){
             map1.put(c, map1.getOrDefault(c, 0) + 1);
         }
-        for(char c: word2.toCharArray()){
+        for(char c : input2.toCharArray()){
             map2.put(c, map2.getOrDefault(c, 0) + 1);
         }
-        int totalCount = word1.length() + word2.length();
-
-        map1.keySet().retainAll(map2.keySet());
         
-        int count = 0;
-        ArrayList<Character> list = new ArrayList<>(map1.keySet());
-        for(int i = 0; i < list.size(); i++){
-            int a = map1.get(list.get(i));
-            int b = map2.get(list.get(i));
-            
-            count += Math.min(a, b) * 2;
+        // 두번째배열을 돌면서 맵에 카운트를 하나씩 지움
+        int answer = 0;
+        for(char c : input2.toCharArray()){
+            int count = map1.getOrDefault(c, 0);
+            if(count > 0){
+                map1.put(c, count-1);
+            }
+            else {
+                answer++;
+            }
         }
-
-        System.out.println(totalCount - count);
-
+        
+        for(char c : input1.toCharArray()){
+            int count = map2.getOrDefault(c, 0);
+            if(count > 0){
+                map2.put(c, count-1);
+            }
+            else {
+                answer++;
+            }
+        }
+        
+        
+        System.out.println(answer);
     }
 }
