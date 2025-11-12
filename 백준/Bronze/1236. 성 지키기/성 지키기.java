@@ -3,37 +3,42 @@ import java.util.*;
 class Main{
     public static void main(String[] args){
         Scanner sc = new Scanner(System.in);
-        
         int n = sc.nextInt();
         int m = sc.nextInt();
+        String[] map = new String[n];
         sc.nextLine();
-        
-        char[][] map = new char[n][m];
-            
-        int xCount = 0;
         for(int i = 0; i < n; i++){
-            String str = sc.nextLine();
-            map[i] = str.toCharArray();
-            
-            if(!str.contains("X")){
-                xCount++;
-            }
+            map[i] = sc.nextLine();
         }
-            
-        int yCount = 0;
-        for(int i = 0; i < m; i++){
-            boolean hasGuard = false;
-            for(int j = 0; j < n; j++){
-                if(map[j][i] == 'X'){
-                    hasGuard = true;
+        
+        int colCount = 0;
+        int rowCount = 0;
+        
+        for(int i = 0; i < n; i++){
+            boolean flag = true;
+            for(int j = 0; j < m; j++){
+                if(map[i].charAt(j) == 'X'){
+                    flag = false;
+                    break;
                 }
             }
-            if(!hasGuard){
-                yCount++;
+            if(flag){
+                colCount++;
             }
         }
         
-        System.out.println(Math.max(xCount, yCount));
-
+        for(int i = 0; i < m; i++){
+            boolean flag = true;
+            for(int j = 0; j < n; j++){
+                if(map[j].charAt(i) == 'X'){
+                    flag = false;
+                }
+            }
+            if(flag){
+                rowCount++;
+            }
+        }
+        
+        System.out.println(Math.max(colCount, rowCount));
     }
 }
