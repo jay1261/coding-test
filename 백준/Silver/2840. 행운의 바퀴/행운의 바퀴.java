@@ -2,54 +2,44 @@ import java.util.*;
 
 class Main{
     public static void main(String[] args){
+        Set<String> set = new HashSet<>();
         Scanner sc = new Scanner(System.in);
-
         int n = sc.nextInt();
         int k = sc.nextInt();
-        sc.nextLine();
-
-        char[] arr = new char[n];
-        Arrays.fill(arr, '?');
-
-        int current = 0;
+        
+        String[] arr = new String[n];
+        
+        int index = 0;
         for(int i = 0; i < k; i++){
-            String[] inputs = sc.nextLine().split(" ");
-            int num = Integer.parseInt(inputs[0]);
-            char c = inputs[1].charAt(0);
-
-            current = (current+num) % n;
-            if(arr[current] == '?'){
-                if(contains(arr, c)){
+            int s = sc.nextInt();
+            String c = sc.next();
+            
+            index = (index + s) % n;
+            //System.out.println("index: " + index);
+            if(arr[index] == null){
+                arr[index] = c;
+                if(!set.add(c)){
                     System.out.println("!");
-                    return;
+                    return;                    
                 }
-                arr[current] = c;
-            } else if(arr[current] != '?' && arr[current] != c){
+            } else if(arr[index].equals(c)){
+                continue;
+            } else {
                 System.out.println("!");
                 return;
             }
-
         }
-
-        StringBuilder sb = new StringBuilder();
-        sb.append(arr[current]);
-        int index = current - 1;
-        while(index != current){
-            if(index < 0 ){
-                index += n;
+        index++;
+        for(int i = 0; i < n; i++){
+            index = Math.abs((index - 1 + n) % n);
+            //System.out.print(index);                
+            if(arr[index] == null){
+                System.out.print("?");                
+            } else {
+                System.out.print(arr[index]);
             }
-            sb.append(arr[index--]);
-        }
-        System.out.println(sb.toString());
-    }
 
-    public static boolean contains(char[] arr, char c){
-        for (char c1 : arr) {
-            if (c1 == c){
-                return true;
-            }
         }
-        return false;
+        
     }
-
 }
