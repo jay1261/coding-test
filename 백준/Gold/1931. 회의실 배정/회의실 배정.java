@@ -1,44 +1,36 @@
 import java.util.*;
 
 class Main{
-	public static void main(String[] args){
-		Scanner sc = new Scanner(System.in);
+    
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
         int n = sc.nextInt();
-        sc.nextLine();
-        Node[] arr = new Node[n];
+        int[][] arr = new int[n][2];
         
-
         for(int i = 0; i < n; i++){
-            String[] splited = sc.nextLine().split(" ");
-            int startTime = Integer.parseInt(splited[0]);
-            int endTime = Integer.parseInt(splited[1]);
-
-            arr[i] = new Node(startTime, endTime);
+            int start = sc.nextInt();
+            int end = sc.nextInt();
+            arr[i][0] = start;
+            arr[i][1] = end;
         }
+        //Arrays.sort(arr, (o1, o2) -> Integer.compare(o1[1]-o1[0], o2[1] -o2[0]));
+        Arrays.sort(arr, (o1, o2) -> Integer.compare(o1[0], o2[0]));
+        Arrays.sort(arr, (o1, o2) -> Integer.compare(o1[1], o2[1]));
 
-        Arrays.sort(arr, (o1, o2) -> Integer.compare(o1.startTime, o2.startTime));
-        Arrays.sort(arr, (o1, o2) -> Integer.compare(o1.endTime, o2.endTime));
-
-        int count = 1;        
-        Node before = arr[0];
-        for(int i = 1; i < n; i++){
-            if(before.endTime <= arr[i].startTime){
-                count++;
-                before = arr[i];
+        //for(int i = 0; i < n; i++){
+        //    System.out.println("[" + arr[i][0] + ", " + arr[i][1] + "]");
+        //}
+        // 시작시간 
+        // 끝나는 시간
+        // 회의시간
+        int endTime = arr[0][1];
+        int answer = 1;
+        for(int i = 1; i < arr.length; i++){
+            if(arr[i][0] >= endTime){
+                endTime = arr[i][1];
+                answer++;
             }
         }
-        
-        System.out.println(count);
-	}
-    
-    static class Node{
-        int startTime;
-        int endTime;
-        
-        public Node(int startTime, int endTime){
-            this.startTime = startTime;
-            this.endTime = endTime;
-        }
- 
+        System.out.println(answer);
     }
 }
