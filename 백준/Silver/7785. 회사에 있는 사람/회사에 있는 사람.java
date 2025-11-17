@@ -3,26 +3,29 @@ import java.util.*;
 class Main{
     public static void main(String[] args){
         Scanner sc = new Scanner(System.in);
-        HashSet<String> set = new HashSet<>();
-        
         int n = sc.nextInt();
-        sc.nextLine();        
+        sc.nextLine();
+        
+        Set<String> set = new HashSet<>();
         
         for(int i = 0; i < n; i++){
-            String[] splited = sc.nextLine().split(" ");
+            String[] inputs = sc.nextLine().split(" ");
+            String name = inputs[0];
+            String state = inputs[1];
             
-            if(splited[1].equals("enter")){
-                set.add(splited[0]);
+            if(state.equals("enter")){
+                set.add(name);
             } else {
-                set.remove(splited[0]);
-            }    
+                set.remove(name);
+            }
         }
-        ArrayList<String> list = new ArrayList<>(set);
-        Collections.sort(list, Collections.reverseOrder());
         
-        for(String name: list){
-            System.out.println(name);
-            
+        List<String> list = new ArrayList<>(set);
+        Collections.sort(list);
+        StringBuilder sb = new StringBuilder();
+        for(int i = list.size()-1; i >=0; i--){
+            sb.append(list.get(i)).append("\n");
         }
+        System.out.println(sb);
     }
 }
