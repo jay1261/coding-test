@@ -1,19 +1,17 @@
 import java.util.*;
 
 class Main{
-	public static void main(String[] args){
-		Scanner sc = new Scanner(System.in);
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
         int n = sc.nextInt();
         int m = sc.nextInt();
-        sc.nextLine();
-        
-        int[][] prefixSumArr = new int[n+1][n+1];
+        int[][] arr = new int[n+1][n+1];
         
         for(int i = 1; i <= n; i++){
-            String[] splited = sc.nextLine().split(" ");
             for(int j = 1; j <= n; j++){
-                int num = Integer.parseInt(splited[j-1]);
-                prefixSumArr[i][j] = prefixSumArr[i-1][j] + prefixSumArr[i][j-1] - prefixSumArr[i-1][j-1] + num;
+                int current = sc.nextInt();
+                
+                arr[i][j] = (arr[i-1][j] + arr[i][j-1] + current) - arr[i-1][j-1];
             }
         }
         
@@ -23,10 +21,7 @@ class Main{
             int x2 = sc.nextInt();
             int y2 = sc.nextInt();
             
-            int answer = prefixSumArr[x2][y2] - prefixSumArr[x1-1][y2] - prefixSumArr[x2][y1-1] + prefixSumArr[x1-1][y1-1];
-            System.out.println(answer);
-            
+            System.out.println(arr[x2][y2] - arr[x2][y1-1] - arr[x1-1][y2] + arr[x1-1][y1-1]);
         }
-        
-	}
+    }
 }
