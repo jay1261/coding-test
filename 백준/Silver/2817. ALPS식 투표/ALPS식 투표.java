@@ -1,63 +1,70 @@
 import java.util.*;
 
-public class Main {
-    public static void main(String[] args){
-        Scanner sc = new Scanner(System.in);
-        HashMap<Character, Integer> map = new HashMap<>();
-        int x = sc.nextInt();
+class Main{
+	public static void main(String[] args){
+		Scanner sc = new Scanner(System.in);
+        
+        int cCount = sc.nextInt();
         int n = sc.nextInt();
         sc.nextLine();
-
+        
+        List<Character> names = new ArrayList<>();
+        List<Integer> votes = new ArrayList<>();
+        
         for(int i = 0; i < n; i++){
-            String[] splited = sc.nextLine().split(" ");
-            int score = Integer.parseInt(splited[1]);
-            if(score < (double)x * 0.05){
-                continue;
+            String[] inputs = sc.nextLine().split(" ");
+            
+            if(Double.valueOf(inputs[1]) >= ((double) cCount *0.05)){
+                names.add(inputs[0].charAt(0));
+                votes.add(Integer.valueOf(inputs[1]));    
             }
-            map.put(splited[0].charAt(0), score);
         }
-
-        if(map.isEmpty()){
-            return;
-        }
-
-        Node[] scores = new Node[map.size()*14];
-        int index = 0;
-        for(char name: map.keySet()){
+        
+        List<Score> scores = new ArrayList<>();
+        
+        for(int i = 0; i < names.size(); i++){
+            char name = names.get(i);
+            int vote = votes.get(i);
+            
             for(int j = 1; j <= 14; j++){
-                double score = (double)map.get(name) / j;
-                scores[index++] = new Node(name, score);
+                scores.add(new Score(name, (double) vote / j));
             }
         }
-
-        Arrays.sort(scores, (o1,o2) -> Double.compare(o2.score, o1.score));
-        for (Character c : map.keySet()) {
-            map.put(c, 0);
+        
+        scores.sort((o1, o2) -> Double.compare(o2.score, o1.score));
+        Map<Character, Integer> map = new HashMap<>();
+        for(int i = 0; i < names.size(); i++){
+            map.put(names.get(i), 0);
         }
-
-        for (int i = 0; i < 14; i++) {
-            Node node = scores[i];
-            map.put(node.name, map.getOrDefault(node.name, 0) + 1);
+        
+        for(int i = 0; i < 14; i++){
+            char name = scores.get(i).name;
+            map.put(name ,map.get(name) + 1);
         }
-
-        ArrayList<Character> list = new ArrayList<>(map.keySet());
+        List<Character> list = new ArrayList<>(map.keySet());
         Collections.sort(list);
-
+        
         StringBuilder sb = new StringBuilder();
         for(char c: list){
             sb.append(c).append(" ").append(map.get(c)).append("\n");
         }
-        System.out.println(sb.toString());
-    }
-
-    static class Node{
-        char name;
-        double score;
-
-        public Node(char name, double score){
+        
+        System.out.println(sb);
+	}
+    
+    
+    static class Score {
+        public char name;
+        public double score;
+        
+        public Score(char name, double score){
             this.name = name;
             this.score = score;
         }
+        
+        @Override
+        public String toString(){
+            return "[" + name + ", " + score + "]\n";
+        }
     }
-
 }
